@@ -1,29 +1,27 @@
-// Fetch and display dog pictures
-const gallery = document.getElementById('dog-gallery');
-const loadMoreBtn = document.getElementById('load-more');
+// Get all the images
+const images = document.querySelectorAll('.dog-image');
+// Get the modal and modal content
+const modal = document.getElementById('imageModal');
+const modalImage = document.getElementById('modalImage');
+// Get the close button
+const closeModal = document.getElementById('closeModal');
 
-const dogAPIUrl = 'https://dog.ceo/api/breeds/image/random/9';
+// Function to open the modal with the clicked image
+images.forEach(image => {
+    image.addEventListener('click', function() {
+        modal.style.display = 'block';
+        modalImage.src = this.src; // Set the src of the modal image to the clicked image
+    });
+});
 
-// Function to fetch and display dog pictures
-async function fetchDogPictures() {
-    try {
-        const response = await fetch(dogAPIUrl);
-        const data = await response.json();
-        const dogImages = data.message;
+// Close the modal when the user clicks the close button
+closeModal.addEventListener('click', function() {
+    modal.style.display = 'none';
+});
 
-        dogImages.forEach(url => {
-            const imgElement = document.createElement('img');
-            imgElement.src = url;
-            imgElement.alt = "Cute dog";
-            gallery.appendChild(imgElement);
-        });
-    } catch (error) {
-        console.error("Error fetching dog images:", error);
+// Close the modal if the user clicks outside the image
+modal.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        modal.style.display = 'none';
     }
-}
-
-// Load initial dog pictures
-fetchDogPictures();
-
-// Load more pictures on button click
-loadMoreBtn.addEventListener('click', fetchDogPictures);
+});
